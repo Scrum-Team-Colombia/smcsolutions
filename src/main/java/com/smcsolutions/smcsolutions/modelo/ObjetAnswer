@@ -1,0 +1,38 @@
+package com.smcsolutions.smcsolutions.modelo;
+
+public class ObjetAnswer {
+
+    private Object object;
+    private String message;
+
+    //generamos el constructor
+
+    public ObjetAnswer(String message, Object object) {
+        this.object = object;
+        this.message = message;
+    }
+
+    //generamos el constructor vacio
+
+    public ObjetAnswer() {
+
+    }
+
+    //generamos los setter and getters
+
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}

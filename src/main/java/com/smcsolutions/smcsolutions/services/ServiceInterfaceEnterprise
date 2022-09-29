@@ -1,0 +1,27 @@
+package com.smcsolutions.smcsolutions.services;
+
+import java.util.List;
+
+public interface ServiceInterfaceEnterprise {
+    //metodos para ver lista enterprise
+
+    public List<Enterprise> getEnterprise();
+
+    //metodo que nos trae un enterprise
+
+    public Enterprise getOnlyOneEnterprise(Long idEnterprise) throws Exception;
+
+    //metodo que nos cree una enterprise
+
+    public String getCreateEnterprise(Enterprise enterprise);
+
+    //metodo que nos permite actualizar el enterprise
+
+    public Enterprise getUpdateEnterprise(Enterprise enterprise) throws Exception;
+
+    //metodo que nos permite eliminar una enterprise
+
+    public String getDeleteEnterprise(Long idEnterprise) throws Exception;
+
+
+}

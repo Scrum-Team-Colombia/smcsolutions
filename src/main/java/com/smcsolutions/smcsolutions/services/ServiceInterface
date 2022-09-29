@@ -1,0 +1,91 @@
+package com.smcsolutions.smcsolutions.services;
+
+
+
+import com.scrummastercolombia.stcsolution.Modelo.Enterprise;
+import com.scrummastercolombia.stcsolution.Modelo.Transaction;
+import com.scrummastercolombia.stcsolution.Repositories.RepositoryEnterprise;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ServiceEnterprise implements ServiceInterfaceEnterprise{
+
+    //Atributo
+
+    Date today = new Date();
+
+    //inyectar un objeto del repositorio de la entidad enterprise
+
+    @Autowired
+    RepositoryEnterprise repositoryEnterprise;
+
+
+    @Override
+    public List<Enterprise> getEnterprise() {
+        return repositoryEnterprise.findAll();
+    }
+
+    @Override
+    public Enterprise getOnlyOneEnterprise(Long idEnterprise) throws Exception {
+        Optional<Enterprise> EnterpriseBD = repositoryEnterprise.findById(idEnterprise);
+        if(EnterpriseBD.isPresent()){
+            return EnterpriseBD.get();
+        }
+        throw new Exception("idEnterprise no existe en nuestra base de datos");
+    }
+
+    @Override
+    public String getCreateEnterprise(Enterprise enterpriseIn) {
+
+        //preguntamos si hay una enterprise registrada con ese id.
+
+        Optional<Enterprise> EnterpriseBD = repositoryEnterprise.findById(enterpriseIn.getIdEnterprise());
+        if(!EnterpriseBD.isPresent()) {
+            repositoryEnterprise.save(enterpriseIn);
+            return "Enterprise creada con exito";
+        }
+        return "ese id ya esta asignado a una enterprise existente";
+    }
+
+    @Override
+    public Enterprise getUpdateEnterprise(Enterprise enterpriseIn) throws Exception {
+        //Llamamos a la enterprise a actualizar
+        Enterprise enterpriseBD = getOnlyOneEnterprise(enterpriseIn.getIdEnterprise());
+
+        //Actualizamos atributos
+        if(enterpriseIn.getNameEnterprise()!=null && !enterpriseIn.getNameEnterprise().equals("")){
+            enterpriseBD.setNameEnterprise(enterpriseIn.getNameEnterprise());
+        }
+
+        if(enterpriseIn.getNitEnterprise()!=null && !enterpriseIn.getNitEnterprise().equals("")){
+            enterpriseBD.setNitEnterprise(enterpriseIn.getNitEnterprise());
+        }
+
+        if(enterpriseIn.getAddressEnterprise()!=null && !enterpriseIn.getAddressEnterprise().equals("")){
+            enterpriseBD.setAddressEnterprise(enterpriseIn.getAddressEnterprise());
+        }
+
+        if(enterpriseIn.getPhoneEnterprise()!=null && !enterpriseIn.getPhoneEnterprise().equals("")){
+            enterpriseBD.setPhoneEnterprise(enterpriseIn.getPhoneEnterprise());
+        }
+
+        enterpriseBD.setUpdateAtEnterprise(today);
+
+        return repositoryEnterprise.save(enterpriseBD);
+    }
+
+    @Override
+    public String getDeleteEnterprise(Long idEnterprise) throws Exception {
+        Optional<Enterprise> enterpriseBD = repositoryEnterprise.findById(idEnterprise);
+        if(enterpriseBD.isPresent()){
+            repositoryEnterprise.deleteById(idEnterprise);
+            return "Enterprise eliminada con exito";
+        }
+        throw new Exception("Enterprise no existe");
+    }
+}
